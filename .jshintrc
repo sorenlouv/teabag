@@ -1,0 +1,9 @@
+{
+    "maxerr": 50,
+    "quotmark": "single",
+    "trailing": true,
+    "browser": true,
+    "devel": true,
+    "globals": {
+    }
+}

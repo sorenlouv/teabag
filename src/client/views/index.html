@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+<head>
+	<meta charset="UTF-8">
+	<script type="text/javascript" src="js/app.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/app.css">
+	<title>TDrop</title>
+</head>
+<body ng-controller="mainCtrl">
+	<h1>Upload</h1>
+	<input type="file" custom-on-change="upload" multiple>
+	<p ng-bind="uploadHash"></p>
+
+	<h1>Download</h1>
+	<form ng-submit="getFiles(magnetUri)">
+		<input type="text" ng-model="magnetUri">
+		<button type="submit">Download</button>
+	</form>
+
+	<div ng-repeat="file in files">
+		<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-bind="file.name"></a>
+	</div>
+</body>
+</html>
+
