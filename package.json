@@ -14,11 +14,16 @@
     "webtorrent": "^0.42.0"
   },
   "devDependencies": {
+    "browserify": "^10.2.1",
     "gulp": "^3.8.11",
+    "gulp-less": "^3.0.3",
+    "gulp-livereload": "^3.8.0",
     "gulp-nodemon": "^2.0.3",
-    "gulp-browserify": "^0.5.1",
+    "gulp-uglify": "^1.2.0",
     "gulp-util": "^3.0.4",
-    "gulp-less": "^3.0.3"
+    "stringify": "^3.1.0",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

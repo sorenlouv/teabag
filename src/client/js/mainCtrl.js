@@ -1,8 +1,7 @@
-var Q = require('Q');
+var Q = require('q');
 var io = require('socket.io-client');
 var WebTorrent = require('webtorrent');
 var dragDrop = require('drag-drop/buffer');
-
 function mainCtrl($scope) {
 	var socket = io.connect('http://localhost:3000');
 	socket.on('news', function(data) {

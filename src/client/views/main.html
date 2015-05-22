@@ -1,0 +1,13 @@
+<div ng-controller="mainCtrl">
+	<h1>Upload</h1>
+	<input type="file" custom-on-change="upload" multiple>
+	<p ng-bind="uploadHash"></p>
+	<h1>Download</h1>
+	<form ng-submit="getFiles(magnetUri)">
+		<input type="text" ng-model="magnetUri">
+		<button type="submit">Download</button>
+	</form>
+	<div ng-repeat="file in files">
+		<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-bind="file.name"></a>
+	</div>
+</div>
