@@ -13,7 +13,7 @@ gulp.task('scripts', function() {
 		.on('error', function(e) {
 			gutil.log(e.message);
 		})
-		.pipe(gulp.dest('./dist/js'));
+		.pipe(gulp.dest('./public/dist/js'));
 });
 
 gulp.task('styles', function() {
@@ -37,7 +37,6 @@ gulp.task('start', function() {
 });
 
 gulp.task('watch', function() {
-	gulp.watch(['./src/client/views/*.html'], ['html']);
 	gulp.watch('./src/client/less/*.less', ['styles']);
 	gulp.watch('./src/client/js/*.js', ['scripts']);
 });
