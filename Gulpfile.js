@@ -24,7 +24,7 @@ gulp.task('styles', function() {
 			gutil.log(e.message);
 			this.emit('end');
 		})
-		.pipe(gulp.dest('dist/css'));
+		.pipe(gulp.dest('./public/dist/css'));
 });
 
 gulp.task('start', function() {
