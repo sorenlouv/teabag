@@ -18,8 +18,8 @@ gulp.task('libs', function() {
 		.bundle()
 		.on('error', gutil.log)
 		.pipe(source('vendors.js'))
-		.pipe(buffer())
-		.pipe(uglify())
+		//.pipe(buffer())
+		//.pipe(uglify())
 		.pipe(gulp.dest('./public/dist/js'));
 });
 
@@ -30,8 +30,8 @@ gulp.task('js', function() {
 		.bundle()
 		.on('error', gutil.log)
 		.pipe(source('app.js'))
-		.pipe(buffer())
-		.pipe(uglify())
+		//.pipe(buffer())
+		//.pipe(uglify())
 		.pipe(gulp.dest('./public/dist/js/'));
 });
 
@@ -63,7 +63,7 @@ gulp.task('watch', function() {
 	gulp.watch('./src/client/less/*.less', ['less']);
 	gulp.watch([
 		'./public/index.html',
-		'./src/client/js/*.js',
+		'./src/client/js/**/*.js',
 		'./src/client/views/*.html',
 	], ['js']);
 });

@@ -5,6 +5,6 @@ angular.module('myApp', [])
 			$templateCache.put('views/main.html', require('../views/main.html'));
 		},
 	])
-	.controller('mainCtrl', require('./mainCtrl'))
-	.directive('customOnChange', require('./customOnChange'))
+	.controller('mainCtrl', require('./controllers/mainCtrl'))
+	.directive('customOnChange', require('./directives/customOnChange'))
 	.config(require('./config.js'));
