@@ -15,13 +15,17 @@ io.on('connection', function(socket) {
 	socket.emit('users', users);
 
 	socket.on('setName', function(name) {
-		users[socket.id].name = name;
-		socket.broadcast.emit('users', users);
+		if (name) {
+			users[socket.id].name = name;
+			socket.broadcast.emit('users', users);
+		}
 	});
 
 	socket.on('setUploads', function(uploads) {
-		users[socket.id].uploads = uploads;
-		socket.broadcast.emit('users', users);
+		if (uploads){
+			users[socket.id].uploads = uploads;
+			socket.broadcast.emit('users', users);
+		}
 	});
 
 	socket.on('disconnect', function() {

@@ -4,18 +4,19 @@ var WebTorrent = require('webtorrent');
 var dragDrop = require('drag-drop/buffer');
 function mainCtrl($scope, $interval, userService, torrentService, socketService) {
 	$scope.torrents = {
-		download: {},
-		upload: {},
+		download: torrentService.getDownloads(),
+		upload: torrentService.getUploads(),
 	};
-	$scope.isLoading = {
-		upload: false
-	};
+	$scope.isLoading = false;
 	$scope.userName = userService.getName();
-	$scope.torrents.upload = torrentService.getUploads();
-	$scope.torrents.download = torrentService.getDownloads();
 
 	$scope.$watch('userName', function(name) {
 		userService.setName(name);
+	});
+
+	socketService.on('connect', function() {
+		socketService.emit('setName', $scope.userName);
+		socketService.emit('setUploads', $scope.torrents.upload);
 	});
 
 	socketService.on('users', function(users) {
@@ -23,15 +24,21 @@ function mainCtrl($scope, $interval, userService, torrentService, socketService)
 		$scope.$digest();
 	});
 
+	$scope.$watch(function() {
+		return socketService.isConnected;
+	}, function(isConnected) {
+		$scope.isConnected = isConnected;
+	});
+
 	$scope.upload = function($event) {
-		$scope.isLoading.upload = true;
+		$scope.isLoading = true;
 		$scope.$digest();
 		var files = $event.target.files;
 
 		torrentService.seed(files)
 			.then(function(torrent) {
 				torrentService.setUpload(torrent);
-				$scope.isLoading.upload = false;
+				$scope.isLoading = false;
 				$scope.$digest();
 				console.log('Seeding torrent', torrent.infoHash);
 			})

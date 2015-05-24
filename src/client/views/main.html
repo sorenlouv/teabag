@@ -1,11 +1,13 @@
 <div layout="column" ng-controller="mainCtrl">
 	<div>
-		<md-content md-theme="docs-dark" layout-padding layout="row" layout-sm="column">
+		<md-content md-theme="docs-dark">
 			<md-input-container>
 				<label>Name</label>
 				<input ng-model="userName" ng-model-options="{ debounce: 600 }">
 			</md-input-container>
 		</md-content>
+		<p ng-hide="isConnected">Your connection to the server was lost</p>
+
 	</div>
 
 	<div layout="row">
@@ -13,7 +15,7 @@
 		<div flex>
 			<h1 class="md-toolbar-tools" layout-align-gt-sm="center">Upload</h1>
 			<input type="file" custom-on-change="upload" multiple>
-			<md-progress-circular md-mode="indeterminate" ng-show="isLoading.upload"></md-progress-circular>
+			<md-progress-circular md-mode="indeterminate" ng-show="isLoading"></md-progress-circular>
 
 			<md-content>
 				<md-list>
