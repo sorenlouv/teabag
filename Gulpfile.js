@@ -10,29 +10,31 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var livereload = require('gulp-livereload');
 
-var dependencies = ['angular', 'q', 'webtorrent', 'lodash', 'socket.io-client'];
+var dependencies = ['q', 'webtorrent', 'lodash', 'socket.io-client'];
 
-gulp.task('libs', function() {
+gulp.task('vendors', function() {
 	return browserify()
 		.require(dependencies)
 		.bundle()
 		.on('error', gutil.log)
 		.pipe(source('vendors.js'))
-		//.pipe(buffer())
-		//.pipe(uglify())
+		.pipe(buffer())
+		.pipe(uglify())
 		.pipe(gulp.dest('./public/dist/js'));
 });
 
 gulp.task('js', function() {
-	browserify('./src/client/js/app.js', {debug: true})
+	browserify('./src/client/js/app.js', {
+		debug: true
+	})
 		.external(dependencies)
 		.transform(stringify(['.html']))
 		.bundle()
 		.on('error', gutil.log)
 		.pipe(source('app.js'))
-		//.pipe(buffer())
-		//.pipe(uglify())
-		.pipe(gulp.dest('./public/dist/js/'));
+	//.pipe(buffer())
+	//.pipe(uglify())
+	.pipe(gulp.dest('./public/dist/js/'));
 });
 
 gulp.task('less', function() {
@@ -57,7 +59,6 @@ gulp.task('startServer', function() {
 	});
 });
 
-
 gulp.task('watch', function() {
 	livereload.listen();
 	gulp.watch('./src/client/less/*.less', ['less']);
@@ -68,4 +69,5 @@ gulp.task('watch', function() {
 	], ['js']);
 });
 
-gulp.task('default', ['less', 'libs', 'js', 'startServer', 'watch']);
+gulp.task('build', ['less', 'js']);
+gulp.task('default', ['less', 'vendors', 'js', 'startServer', 'watch']);

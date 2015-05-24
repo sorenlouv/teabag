@@ -5,24 +5,29 @@ var io = require('socket.io')(server);
 
 app.use(express.static('public'));
 
-app.get('/', function(req, res) {
-	res.send('Hello World!');
+app.get('/users', function(req, res) {
+	res.send(users);
 });
 
-// io.on('connection', function(socket) {
-// 	// console.log(io.sockets.adapter.nsp.connected);
-// 	console.log('logon');
-// 	// socket.emit('news', {
-// 	// 	hello: 'world'
-// 	// });
-// 	// socket.on('my other event', function(data) {
-// 	// 	console.log(data);
-// 	// });
+var users = {};
+io.on('connection', function(socket) {
+	users[socket.id] = {};
+	socket.emit('users', users);
 
-// 	io.on('disconnect', function() {
-// 		console.log('logoff');
-// 	});
-// });
+	socket.on('setName', function(name) {
+		users[socket.id].name = name;
+		socket.broadcast.emit('users', users);
+	});
+
+	socket.on('setUploads', function(uploads) {
+		users[socket.id].uploads = uploads;
+		socket.broadcast.emit('users', users);
+	});
+
+	socket.on('disconnect', function() {
+		delete users[socket.id];
+	});
+});
 
 server.listen(3000, function() {
 	var host = server.address().address;
