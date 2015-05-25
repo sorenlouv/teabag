@@ -82,5 +82,5 @@ gulp.task('watch', function() {
 	], ['js:dev']);
 });
 
-gulp.task('production', ['less', 'vendors', 'js:prod', 'startServer']);
+gulp.task('production', ['less', 'vendors', 'js:prod']);
 gulp.task('default', ['less', 'vendors', 'js:dev', 'startServer', 'watch']);
