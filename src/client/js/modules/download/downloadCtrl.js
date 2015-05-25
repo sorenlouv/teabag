@@ -5,10 +5,6 @@ function downloadCtrl($scope, $sce, torrentService, socketService) {
 	var pendingTorrents = {};
 	$scope.userTorrents = [];
 
-	socketService.on('connect', function() {
-		$scope.currentUserId = socketService.getId();
-	});
-
 	socketService.on('userTorrents:updated', function(userTorrents) {
 		$scope.userTorrents = getFilteredUserTorrents(userTorrents);
 		$scope.$digest();
@@ -16,11 +12,11 @@ function downloadCtrl($scope, $sce, torrentService, socketService) {
 
 	$scope.getFileType = function(file) {
 		return torrentService.getFileType(file.name);
-	}
+	};
 
 	$scope.getTrustedUrl = function(url) {
 		return $sce.trustAsResourceUrl(url);
-	}
+	};
 
 	$scope.download = function(infoHash) {
 		var client = new WebTorrent();

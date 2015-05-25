@@ -3,6 +3,12 @@ var _ = require('lodash');
 function uploadController($scope, $window, torrentService, socketService) {
 	$scope.uploadTorrents = [];
 
+	socketService.on('connect', function() {
+		if (!_.isEmpty($scope.uploadTorrents)){
+			socketService.emit('torrents:sync', $scope.uploadTorrents);
+		}
+	});
+
 	$scope.isEmpty = function(collection) {
 		return _.isEmpty(collection);
 	};

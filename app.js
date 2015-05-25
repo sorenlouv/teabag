@@ -23,6 +23,20 @@ io.on('connection', function(socket) {
 		}
 	});
 
+	// When a client re-connects
+	socket.on('torrents:sync', function(torrents) {
+		if (torrents){
+			_.remove(userTorrents, {userId: userId});
+
+			torrents.map(function(torrent) {
+				torrent.userId = userId;
+				userTorrents.push(torrent);
+			});
+
+			emitTorrentsToAll();
+		}
+	});
+
 	socket.on('disconnect', function() {
 		_.remove(userTorrents, {userId: userId});
 		emitTorrentsToAll();
