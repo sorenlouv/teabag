@@ -1,7 +1,7 @@
 var WebTorrent = require('webtorrent');
 var _ = require('lodash');
 
-function downloadCtrl($scope, torrentService, socketService) {
+function downloadCtrl($scope, $sce, torrentService, socketService) {
 	var pendingTorrents = {};
 	$scope.userTorrents = [];
 
@@ -13,6 +13,14 @@ function downloadCtrl($scope, torrentService, socketService) {
 		$scope.userTorrents = getFilteredUserTorrents(userTorrents);
 		$scope.$digest();
 	});
+
+	$scope.getFileType = function(file) {
+		return torrentService.getFileType(file.name);
+	}
+
+	$scope.getTrustedUrl = function(url) {
+		return $sce.trustAsResourceUrl(url);
+	}
 
 	$scope.download = function(infoHash) {
 		var client = new WebTorrent();
@@ -71,4 +79,4 @@ function downloadCtrl($scope, torrentService, socketService) {
 	}
 }
 
-module.exports = ['$scope', 'torrentService', 'socketService', downloadCtrl];
+module.exports = ['$scope', '$sce', 'torrentService', 'socketService', downloadCtrl];

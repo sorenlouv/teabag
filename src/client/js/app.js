@@ -1,4 +1,4 @@
-angular.module('teabagApp', ['ngMaterial'])
+angular.module('teabagApp', ['ngMaterial', 'ngSanitize'])
 	.config(require('./config.js'))
 	.run(['$templateCache',
 		function($templateCache) {

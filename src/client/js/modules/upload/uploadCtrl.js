@@ -1,6 +1,5 @@
 var _ = require('lodash');
 
-
 function uploadController($scope, $window, torrentService, socketService) {
 	$scope.uploadTorrents = [];
 
@@ -13,12 +12,16 @@ function uploadController($scope, $window, torrentService, socketService) {
 	};
 
 	$scope.upload = function(files) {
-		var uploadTorrent = new torrentService.UploadTorrent(files);
+		var uploadTorrent = {
+			name: torrentService.getName(files),
+			isUploaded: false,
+		};
 		$scope.uploadTorrents.push(uploadTorrent);
 
 		torrentService.seed(files)
 			.then(function uploadFinished(torrent) {
-				uploadTorrent.setCompleted(torrent);
+				uploadTorrent.infoHash = torrent.infoHash;
+				uploadTorrent.isUploaded = true;
 				socketService.emit('torrent:uploaded', uploadTorrent);
 				$scope.$digest();
 			})

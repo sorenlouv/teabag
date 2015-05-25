@@ -1,21 +1,31 @@
 var Q = require('q');
 var WebTorrent = require('webtorrent');
+var _ = require('lodash');
+
 function torrentService() {
 	var service = {};
 
-	service.UploadTorrent = function(files) {
+	service.getName = function(files) {
 		var name = files[0].name;
 		if (files.length > 1){
 			name += ' and ' + (files.length - 1) + ' other file(s)';
 		}
-
-		this.name = name;
-		this.isUploaded = false;
+		return name;
 	};
 
-	service.UploadTorrent.prototype.setCompleted = function(torrent) {
-		this.infoHash = torrent.infoHash;
-		this.isUploaded = true;
+	service.getFileType = function(filename) {
+		var ext = filename.split('.').pop();
+		var videoExtensions = require('video-extensions');
+		var imageExtensions = require('image-extensions');
+
+		var isImage = _.contains(imageExtensions, ext);
+		var isVideo = _.contains(videoExtensions, ext);
+
+		if (isImage) {
+			return 'image';
+		} else if (isVideo){
+			return 'video';
+		}
 	};
 
 	service.getFileUrl = function(file) {

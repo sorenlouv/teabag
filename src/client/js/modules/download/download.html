@@ -1,5 +1,5 @@
 <div ng-controller="downloadCtrl">
-	<section class="md-whiteframe-z2" ng-show="userTorrents.length > 0">
+	<section class="md-whiteframe-z2 available-torrents" ng-show="userTorrents.length > 0">
 		<md-toolbar>
 			<h2 class="md-toolbar-tools">
 				<span>Available files</span>
@@ -23,8 +23,20 @@
 								ng-value="userTorrent.progress">
 							</md-progress-linear>
 							<ul ng-show="userTorrent.isDownloaded">
-								<li ng-repeat="file in userTorrent.files">
-									<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-bind="file.name"></a>
+								<li ng-repeat="file in userTorrent.files" class="file-preview">
+									<div ng-switch on="getFileType(file)">
+										<div ng-switch-when="image">
+											<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-alt="file.name">
+												<img ng-src="{{file.url}}" ng-alt="file.name">
+											</a>
+										</div>
+										<div ng-switch-when="video">
+											<video controls="" autoplay="true" ng-src="{{getTrustedUrl(file.url)}}"></video>
+										</div>
+										<div ng-switch-default>
+											<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-bind="file.name"></a>
+										</div>
+									</div>
 								</li>
 							</ul>
 						</p>
