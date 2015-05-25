@@ -31,7 +31,7 @@
 											</a>
 										</div>
 										<div ng-switch-when="video">
-											<video controls="" autoplay="true" ng-src="{{getTrustedUrl(file.url)}}"></video>
+											<video controls="" ng-src="{{getTrustedUrl(file.url)}}"></video>
 										</div>
 										<div ng-switch-default>
 											<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-bind="file.name"></a>
