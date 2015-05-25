@@ -1,5 +1,5 @@
-# tdrop
-Forget about AirDrop - this is tDrop!
+# Teabag
+Teabag your files - it's fun!
 
 # Install
 `npm install`

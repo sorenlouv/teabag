@@ -1,4 +1,4 @@
-angular.module('myApp', ['ngMaterial'])
+angular.module('teabagApp', ['ngMaterial'])
 	.config(require('./config.js'))
 	.run(['$templateCache',
 		function($templateCache) {
