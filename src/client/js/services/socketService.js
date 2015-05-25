@@ -1,7 +1,7 @@
 var io = require('socket.io-client');
 
 function socketService($rootScope) {
-	var socket = io.connect('http://localhost:3000');
+	var socket = io.connect(window.location.origin);
 	var service = {
 		isConnected: false,
 	};

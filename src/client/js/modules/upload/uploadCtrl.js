@@ -1,11 +1,15 @@
 var _ = require('lodash');
 
 
-function uploadController($scope, torrentService, socketService) {
+function uploadController($scope, $window, torrentService, socketService) {
 	$scope.uploadTorrents = [];
 
 	$scope.isEmpty = function(collection) {
 		return _.isEmpty(collection);
+	};
+
+	$window.onbeforeunload = function() {
+		return $scope.uploadTorrents.length === 0 ? null : 'This action will stop all active file transfers';
 	};
 
 	$scope.upload = function(files) {
@@ -24,4 +28,4 @@ function uploadController($scope, torrentService, socketService) {
 	};
 }
 
-module.exports = ['$scope', 'torrentService', 'socketService', uploadController];
+module.exports = ['$scope', '$window', 'torrentService', 'socketService', uploadController];
