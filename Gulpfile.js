@@ -23,19 +23,31 @@ gulp.task('vendors', function() {
 		.pipe(gulp.dest('./public/dist/js'));
 });
 
-gulp.task('js', function() {
-	browserify('./src/client/js/app.js', {
-		debug: true
-	})
+gulp.task('js:dev', function() {
+	buildJs('development');
+});
+
+gulp.task('js:prod', function() {
+	buildJs('production');
+});
+
+function buildJs(env) {
+	var b = browserify('./src/client/js/app.js', {
+			debug: true
+		})
 		.external(dependencies)
 		.transform(stringify(['.html']))
 		.bundle()
 		.on('error', gutil.log)
-		.pipe(source('app.js'))
-	//.pipe(buffer())
-	//.pipe(uglify())
-	.pipe(gulp.dest('./public/dist/js/'));
-});
+		.pipe(source('app.js'));
+
+	if(env === 'production') {
+		b = b.pipe(buffer())
+		 .pipe(uglify());
+	}
+
+	b.pipe(gulp.dest('./public/dist/js/'));
+}
 
 gulp.task('less', function() {
 	return gulp.src(['./src/client/less/app.less'])
@@ -67,8 +79,8 @@ gulp.task('watch', function() {
 		'./public/index.html',
 		'./src/client/js/**/*.js',
 		'./src/client/js/**/*.html',
-	], ['js']);
+	], ['js:dev']);
 });
 
-gulp.task('build', ['less', 'js']);
-gulp.task('default', ['less', 'vendors', 'js', 'startServer', 'watch']);
+gulp.task('production', ['less', 'vendors', 'js:prod', 'startServer']);
+gulp.task('default', ['less', 'vendors', 'js:dev', 'startServer', 'watch']);
