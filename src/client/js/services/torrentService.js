@@ -1,31 +1,49 @@
 var Q = require('q');
 var _ = require('lodash');
 var WebTorrent = require('webtorrent');
-function torrentService(socketService, userService) {
+var uuid = require('uuid');
+function torrentService(socketService) {
 	var service = {};
 	var uploads = {};
 	var downloads = {};
 
-	service.setUpload = function(torrent) {
-		uploads[torrent.infoHash] = {
-			name: torrent.name,
-			infoHash: torrent.infoHash,
+	service.uploadStarted = function(files) {
+		var uploadId = uuid.v4();
+
+		var name = files[0].name;
+		if (files.length > 1){
+			name += ' and ' + (files.length - 1) + ' other file(s)';
+		}
+
+		uploads[uploadId] = {
+			name: name,
+			isCompleted: false,
 		};
 
-		socketService.emit('setUploads', uploads);
+		return uploadId;
 	};
 
-	service.setDownload = function(torrent, files) {
-		downloads[torrent.infoHash] = {
-			obj: torrent,
-			name: torrent.name,
-			infoHash: torrent.infoHash,
-			files: files,
-		};
+	service.uploadCompleted = function(id, torrent) {
+		uploads[id].infoHash = torrent.infoHash;
+		uploads[id].isComplete = true;
+		socketService.emit('setTorrents', uploads);
 	};
 
 	service.getUploads = function() {
 		return uploads;
+	};
+
+	service.downloadStarted = function(torrent, name) {
+		downloads[torrent.infoHash] = {
+			obj: torrent,
+			name: name,
+			progress: 0,
+			isCompleted: false,
+		};
+	};
+
+	service.downloadCompleted = function(torrent, files) {
+		downloads[torrent.infoHash].files = files;
 	};
 
 	service.getDownloads = function() {
@@ -73,4 +91,4 @@ function torrentService(socketService, userService) {
 	return service;
 }
 
-module.exports = ['socketService', 'userService', torrentService];
+module.exports = ['socketService', torrentService];

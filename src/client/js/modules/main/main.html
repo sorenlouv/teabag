@@ -1,0 +1,8 @@
+<div ng-controller="mainCtrl">
+	<div class="connection-lost" ng-hide="isConnected">Your connection to the server was lost. Trying to reconnect...</div>
+
+	<div layout="column">
+		<div flex ng-include="'upload.html'"></div>
+		<!-- <div flex ng-include="'download.html'"></div> -->
+	</div>
+</div>

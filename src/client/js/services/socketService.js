@@ -1,15 +1,19 @@
 var io = require('socket.io-client');
 
-function socketService() {
-	var service = {};
+function socketService($rootScope) {
 	var socket = io.connect('http://localhost:3000');
+	var service = {
+		isConnected: false,
+	};
 
 	socket.on('connect', function() {
 		service.isConnected = true;
+		$rootScope.$digest();
 	});
 
 	socket.on('disconnect', function() {
 		service.isConnected = false;
+		$rootScope.$digest();
 	});
 
 	service.emit = function() {
@@ -23,4 +27,4 @@ function socketService() {
 	return service;
 }
 
-module.exports = [socketService];
+module.exports = ['$rootScope', socketService];

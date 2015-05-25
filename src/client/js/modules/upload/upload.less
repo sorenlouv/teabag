@@ -1,0 +1,28 @@
+.md-whiteframe-z2 {
+	background-color: #fff;
+	margin: @ts-unit;
+	md-content {
+		padding: @ts-unit;
+	}
+}
+
+.upload-target {
+	.drop-files {
+		display: none;
+	}
+
+	&.drag {
+		background-color: #ddd;
+		* {
+			background-color: #ddd;
+		}
+
+		.drag-files {
+			display: none;
+		}
+		.drop-files {
+			display: block;
+		}
+	}
+}
+

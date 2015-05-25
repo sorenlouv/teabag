@@ -12,25 +12,23 @@ app.get('/users', function(req, res) {
 var users = {};
 io.on('connection', function(socket) {
 	users[socket.id] = {};
-	socket.emit('users', users);
+	emitUsersToAll();
 
-	socket.on('setName', function(name) {
-		if (name) {
-			users[socket.id].name = name;
-			socket.broadcast.emit('users', users);
-		}
-	});
-
-	socket.on('setUploads', function(uploads) {
-		if (uploads){
-			users[socket.id].uploads = uploads;
-			socket.broadcast.emit('users', users);
+	socket.on('setTorrents', function(torrents) {
+		if (torrents){
+			users[socket.id].torrents = torrents;
+			emitUsersToAll();
 		}
 	});
 
 	socket.on('disconnect', function() {
 		delete users[socket.id];
+		emitUsersToAll();
 	});
+
+	function emitUsersToAll() {
+		io.sockets.emit('users', users);
+	}
 });
 
 server.listen(3000, function() {

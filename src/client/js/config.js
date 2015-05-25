@@ -1,10 +1,6 @@
 function config($compileProvider, $mdThemingProvider) {
 	$compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|blob):/);
-
-	// Configure a dark theme with primary foreground yellow
-	$mdThemingProvider.theme('docs-dark', 'default')
-		.primaryPalette('blue')
-		.dark();
+	$mdThemingProvider.theme('default');
 }
 
 module.exports = ['$compileProvider', '$mdThemingProvider', config];

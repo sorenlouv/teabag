@@ -3,7 +3,9 @@
     "trailing": true,
     "browser": true,
     "devel": true,
-    "globals": {},
+    "globals": {
+    	"angular": true
+    },
     "undef": true,
     "node": true
 }

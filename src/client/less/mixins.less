@@ -1,0 +1,9 @@
+.fadeNgHide (@duration: 0.2s) {
+	transition: opacity @duration;
+	&.ng-hide {
+		opacity: 0;
+		&.ng-hide-active {
+		  opacity: 1;
+		}
+	}
+}

@@ -1,0 +1,29 @@
+<div ng-controller="uploadCtrl">
+
+	<section class="md-whiteframe-z2 upload-target" layout layout-align="center center" drag-drop="upload">
+		<md-content>
+			<input type="file" custom-on-change="upload" multiple>
+			<h2 class="drag-files">Drag and drop here...</h2>
+			<h2 class="drop-files">Drop your files now</h2>
+		</md-content>
+	</section>
+
+	<section class="md-whiteframe-z2" ng-hide="isEmpty(uploadTorrents)">
+		<md-toolbar>
+			<h2 class="md-toolbar-tools">
+				<span>Uploaded files</span>
+			</h2>
+		</md-toolbar>
+		<md-content>
+			<md-list>
+				<md-list-item class="md-3-line" ng-repeat="torrent in uploadTorrents">
+					<div class="md-list-item-text">
+						<p ng-bind="torrent.name"></p>
+						<md-progress-linear md-mode="indeterminate" ng-hide="torrent.isComplete"></md-progress-linear>
+						<md-divider ng-if="!$last"></md-divider>
+					</div>
+				</md-list-item>
+			</md-list>
+		</md-content>
+	</section>
+</div>

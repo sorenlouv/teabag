@@ -34,14 +34,16 @@ gulp.task('js', function() {
 		.pipe(source('app.js'))
 	//.pipe(buffer())
 	//.pipe(uglify())
-	.pipe(gulp.dest('./public/dist/js/'));
+	.pipe(gulp.dest('./public/dist/js/'))
+	.pipe(livereload());
 });
 
 gulp.task('less', function() {
-	return gulp.src('./src/client/less/*.less')
+	return gulp.src(['./src/client/less/app.less'])
 		.pipe(less({
-			paths: [path.join(__dirname, 'less', 'includes')]
-		})).on('error', function(e) {
+			paths: ['./src/client/js/modules/']
+		}))
+		.on('error', function(e) {
 			gutil.log(e.message);
 			this.emit('end');
 		})
@@ -61,11 +63,11 @@ gulp.task('startServer', function() {
 
 gulp.task('watch', function() {
 	livereload.listen();
-	gulp.watch('./src/client/less/*.less', ['less']);
+	gulp.watch('./src/client/**/*.less', ['less']);
 	gulp.watch([
 		'./public/index.html',
 		'./src/client/js/**/*.js',
-		'./src/client/views/*.html',
+		'./src/client/js/**/*.html',
 	], ['js']);
 });
 
