@@ -11,7 +11,7 @@
 	<section class="md-whiteframe-z2" ng-hide="isEmpty(uploadTorrents)">
 		<md-toolbar>
 			<h2 class="md-toolbar-tools">
-				<span>Uploaded files</span>
+				<span>Your files</span>
 			</h2>
 		</md-toolbar>
 		<md-content>
@@ -19,7 +19,7 @@
 				<md-list-item class="md-3-line" ng-repeat="torrent in uploadTorrents">
 					<div class="md-list-item-text">
 						<p ng-bind="torrent.name"></p>
-						<md-progress-linear md-mode="indeterminate" ng-hide="torrent.isComplete"></md-progress-linear>
+						<md-progress-linear md-mode="indeterminate" ng-hide="torrent.isUploaded"></md-progress-linear>
 						<md-divider ng-if="!$last"></md-divider>
 					</div>
 				</md-list-item>

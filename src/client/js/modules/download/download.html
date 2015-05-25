@@ -1,29 +1,37 @@
 <div ng-controller="downloadCtrl">
-	<div ng-show="hasAnyUserTorrents()">
-		<md-subheader>Available files</md-subheader>
-		<div ng-repeat="(userId, user) in users" ng-show="hasUserTorrents(user)">
-			<ul>
-				<li
-					ng-repeat="torrent in user.torrents"
-					ng-click="download(torrent.infoHash, torrent.name)"
-					ng-bind="torrent.name">
-				</li>
-			</ul>
-		</div>
-	</div>
-
-	<md-list ng-show="hasDownloads()">
-		<md-subheader>Downloading files</md-subheader>
-		<md-list-item class="md-3-line" ng-repeat="torrent in downloadTorrents">
-			<div class="md-list-item-text">
-				<h3>{{ torrent.name }}</h3>
-				<md-progress-linear md-mode="determinate" ng-value="torrent.progress"></md-progress-linear>
-				<ul ng-show="torrent.progress == 100">
-					<li ng-repeat="file in torrent.files">
-						<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-bind="file.name"></a>
-					</li>
-				</ul>
-			</div>
-		</md-list-item>
-	</md-list>
+	<section class="md-whiteframe-z2" ng-show="userTorrents.length > 0">
+		<md-toolbar>
+			<h2 class="md-toolbar-tools">
+				<span>Available files</span>
+			</h2>
+		</md-toolbar>
+		<md-content>
+			<md-list>
+				<md-list-item class="md-3-line"
+					ng-repeat="userTorrent in userTorrents">
+					<div class="md-list-item-text">
+						<h3 ng-bind="userTorrent.name"></h3>
+						<p>
+							<span
+								ng-show="!userTorrent.isDownloaded"
+								ng-click="download(userTorrent.infoHash)">
+								Download
+							</span>
+							<md-progress-linear
+								ng-show="userTorrent.isDownloading"
+								md-mode="determinate"
+								ng-value="userTorrent.progress">
+							</md-progress-linear>
+							<ul ng-show="userTorrent.isDownloaded">
+								<li ng-repeat="file in userTorrent.files">
+									<a target="_blank" download="{{file.name}}" ng-href="{{file.url}}" ng-bind="file.name"></a>
+								</li>
+							</ul>
+						</p>
+						<md-divider ng-if="!$last"></md-divider>
+					</div>
+				</md-list-item>
+			</md-list>
+		</md-content>
+	</section>
 </div>

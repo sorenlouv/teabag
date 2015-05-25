@@ -10,7 +10,7 @@ var buffer = require('vinyl-buffer');
 var uglify = require('gulp-uglify');
 var livereload = require('gulp-livereload');
 
-var dependencies = ['q', 'webtorrent', 'lodash', 'socket.io-client'];
+var dependencies = ['q', 'webtorrent', 'lodash', 'socket.io-client', 'drag-drop/buffer'];
 
 gulp.task('vendors', function() {
 	return browserify()
@@ -34,8 +34,7 @@ gulp.task('js', function() {
 		.pipe(source('app.js'))
 	//.pipe(buffer())
 	//.pipe(uglify())
-	.pipe(gulp.dest('./public/dist/js/'))
-	.pipe(livereload());
+	.pipe(gulp.dest('./public/dist/js/'));
 });
 
 gulp.task('less', function() {

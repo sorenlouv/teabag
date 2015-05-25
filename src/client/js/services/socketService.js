@@ -24,6 +24,10 @@ function socketService($rootScope) {
 		socket.on(name, handler);
 	};
 
+	service.getId = function() {
+		return socket.id;
+	};
+
 	return service;
 }
 

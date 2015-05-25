@@ -1,53 +1,21 @@
 var Q = require('q');
-var _ = require('lodash');
 var WebTorrent = require('webtorrent');
-var uuid = require('uuid');
-function torrentService(socketService) {
+function torrentService() {
 	var service = {};
-	var uploads = {};
-	var downloads = {};
 
-	service.uploadStarted = function(files) {
-		var uploadId = uuid.v4();
-
+	service.UploadTorrent = function(files) {
 		var name = files[0].name;
 		if (files.length > 1){
 			name += ' and ' + (files.length - 1) + ' other file(s)';
 		}
 
-		uploads[uploadId] = {
-			name: name,
-			isCompleted: false,
-		};
-
-		return uploadId;
+		this.name = name;
+		this.isUploaded = false;
 	};
 
-	service.uploadCompleted = function(id, torrent) {
-		uploads[id].infoHash = torrent.infoHash;
-		uploads[id].isComplete = true;
-		socketService.emit('setTorrents', uploads);
-	};
-
-	service.getUploads = function() {
-		return uploads;
-	};
-
-	service.downloadStarted = function(torrent, name) {
-		downloads[torrent.infoHash] = {
-			obj: torrent,
-			name: name,
-			progress: 0,
-			isCompleted: false,
-		};
-	};
-
-	service.downloadCompleted = function(torrent, files) {
-		downloads[torrent.infoHash].files = files;
-	};
-
-	service.getDownloads = function() {
-		return downloads;
+	service.UploadTorrent.prototype.setCompleted = function(torrent) {
+		this.infoHash = torrent.infoHash;
+		this.isUploaded = true;
 	};
 
 	service.getFileUrl = function(file) {
@@ -91,4 +59,4 @@ function torrentService(socketService) {
 	return service;
 }
 
-module.exports = ['socketService', torrentService];
+module.exports = [torrentService];

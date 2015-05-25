@@ -2,32 +2,34 @@ var express = require('express');
 var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
+var _ = require('lodash');
 
 app.use(express.static('public'));
 
-app.get('/users', function(req, res) {
-	res.send(users);
+app.get('/userTorrents', function(req, res) {
+	res.send(userTorrents);
 });
 
-var users = {};
+var userTorrents = [];
 io.on('connection', function(socket) {
-	users[socket.id] = {};
-	emitUsersToAll();
+	var userId = socket.id;
+	emitTorrentsToAll();
 
-	socket.on('setTorrents', function(torrents) {
-		if (torrents){
-			users[socket.id].torrents = torrents;
-			emitUsersToAll();
+	socket.on('torrent:uploaded', function(torrent) {
+		if (torrent){
+			torrent.userId = socket.id;
+			userTorrents.push(torrent);
+			emitTorrentsToAll();
 		}
 	});
 
 	socket.on('disconnect', function() {
-		delete users[socket.id];
-		emitUsersToAll();
+		_.remove(userTorrents, {userId: userId});
+		emitTorrentsToAll();
 	});
 
-	function emitUsersToAll() {
-		io.sockets.emit('users', users);
+	function emitTorrentsToAll() {
+		io.sockets.emit('userTorrents:updated', userTorrents);
 	}
 });
 
